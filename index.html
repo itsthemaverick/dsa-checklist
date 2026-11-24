@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>DSA Exam Prep Checklist</title>
+<style>
+:root{--bg:#f3f6f4;--card:#fff;--ink:#17231d;--mute:#5d6b63;--line:#d5ded9;--acc:#1f6f55;--accbg:#dff0e8;--hot:#a4531a;--hotbg:#fbe9d8}
+@media (prefers-color-scheme:dark){:root{--bg:#121a16;--card:#1a251f;--ink:#e6efe9;--mute:#9baba1;--line:#2b3a32;--acc:#5fc79d;--accbg:#1f3a2e;--hot:#f0a56a;--hotbg:#3a2a1b}}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.5 Georgia,"Times New Roman",serif}
+.wrap{max-width:860px;margin:0 auto;padding:20px 16px 60px}
+h1{font-size:1.7rem;margin:8px 0 2px}
+.sub{color:var(--mute);margin:0 0 16px;font-family:system-ui,sans-serif;font-size:.92rem}
+.bar{position:sticky;top:0;background:var(--bg);padding:10px 0;z-index:5;border-bottom:1px solid var(--line);font-family:system-ui,sans-serif}
+.track{height:10px;background:var(--line);border-radius:6px;overflow:hidden}
+.fill{height:100%;width:0;background:var(--acc);transition:width .25s}
+.row{display:flex;justify-content:space-between;gap:8px;flex-wrap:wrap;font-size:.88rem;margin-top:6px;align-items:center}
+button{font:inherit;font-size:.82rem;border:1px solid var(--line);background:var(--card);color:var(--ink);padding:4px 10px;border-radius:6px;cursor:pointer}
+button:hover{border-color:var(--acc)}
+button:focus-visible,input:focus-visible{outline:2px solid var(--acc);outline-offset:2px}
+details{background:var(--card);border:1px solid var(--line);border-radius:8px;margin:12px 0}
+summary{cursor:pointer;padding:12px 14px;font-weight:bold;display:flex;justify-content:space-between;gap:10px;list-style:none}
+summary::-webkit-details-marker{display:none}
+summary small{font-family:system-ui,sans-serif;font-weight:normal;color:var(--mute)}
+ul{list-style:none;margin:0;padding:0 14px 8px}
+li{border-top:1px solid var(--line);padding:9px 0}
+label{display:flex;gap:10px;align-items:flex-start;cursor:pointer}
+input[type=checkbox]{width:20px;height:20px;margin-top:3px;accent-color:var(--acc);flex:none}
+.t{flex:1}
+.q{display:block;font-family:system-ui,sans-serif;font-size:.8rem;color:var(--mute)}
+.hot{font-family:system-ui,sans-serif;font-size:.72rem;background:var(--hotbg);color:var(--hot);padding:1px 7px;border-radius:10px;margin-left:6px;white-space:nowrap}
+li.done .t b{text-decoration:line-through;color:var(--mute);font-weight:normal}
+.hide li.done{display:none}
+</style>
+</head>
+<body>
+<div class="wrap">
+<h1>DSA exam prep checklist</h1>
+<p class="sub">Every topic from the question bank (Q1–Q127), grouped by unit. Question numbers are listed under each topic. “Frequent” means the topic appears in 4 or more questions.</p>
+<div class="bar">
+ <div class="track"><div class="fill" id="fill"></div></div>
+ <div class="row"><span id="stat"></span>
+ <span><button id="hideBtn">Hide done</button> <button id="expBtn">Expand all</button> <button id="resetBtn">Reset</button></span></div>
+</div>
+<div id="app"></div>
+</div>
+<script>
+const D=[
+["Unit 1 · Basics and algorithm analysis",[
+["Time and space complexity, step count / frequency count (incl. nested-loop code in Q1)","1,4,6"],
+["Asymptotic notations (Big-O, Omega, Theta) and why they matter","1,4"],
+["Abstract Data Type (ADT)","3,35"],
+["Divide and conquer, and greedy strategy","3,8"],
+["Backtracking strategy and use of stack","32"],
+["Linear vs non-linear data structures","2"],
+["Static vs dynamic data structures","5,13"],
+["Classification of data structures","7"],
+["Sequential organization: advantages and disadvantages","9"]]],
+["Unit 2 · Searching and hashing",[
+["Sequential (linear) search","57"],
+["Binary search: algorithm, dry runs, pre-sorted requirement, complexity","24,37,51,59"],
+["Different searching techniques and their complexities","26"],
+["Hashing and properties of a good hash function","61"],
+["Linear probing (with and without replacement), average comparisons","80,82"],
+["Chaining with replacement","82"],
+["Quadratic probing, advantages over linear probing, applications of hash tables","81,87"]]],
+["Unit 3 · Sorting",[
+["Bubble sort: algorithm, pass-by-pass trace, number of passes","10,36,58"],
+["Selection sort: algorithm, pass-by-pass trace, best/worst complexity","27,38,52"],
+["Quick sort: algorithm, trace, complexity, advantages","25,53,60"],
+["Merge sort: algorithm, example, complexity","54"],
+["Radix sort, with time and space complexity","11"]]],
+["Unit 4 · Linked lists",[
+["Linked list and its types (with diagrams)","64"],
+["Singly linked list: insert node (at position P, general insert)","14,55,62"],
+["Polynomial addition using singly linked list","12"],
+["Merge two sorted singly linked lists, with complexity","41"],
+["Circular linked list: operations, node structure, insertion","13,40"],
+["Doubly linked list: operations, insert last, delete first/last, deletion with example, advantages over singly","15,28,39,40"],
+["Generalized linked list (GLL): polynomial representation, node structure, multi-variable polynomial diagram","63,65"]]],
+["Unit 5 · Stack and recursion",[
+["Stack basic operations (pseudo code)","16"],
+["Stack using array with overflow and underflow","45"],
+["Linked implementation of stack","18"],
+["Recursion: concept, variants/types, use of stack in recursion","17,30,43"],
+["Infix, prefix, postfix expressions","44,69"],
+["Infix to postfix: rules, pseudo code, need for conversion","19,31,42,66,71"],
+["Stepwise conversion problems, including exponent operator ^","31,42,66,71"],
+["Postfix evaluation with example","29,44,69"]]],
+["Unit 6 · Queues",[
+["Queue: definition, queue as ADT, representation in memory","35,67"],
+["Linear queue using array","50"],
+["Linear queue using linked list (add, remove, full, empty)","21,47"],
+["Circular queue: concept, advantages over linear, array pseudo code","20,23,34,46,68"],
+["Priority queue: definition, array implementation, real-life application","20,22,49,70"],
+["Double-ended queue (dequeue): operations, diagram, create/insert/delete/display","33,48"],
+["Input-restricted and output-restricted dequeue insertion","56"]]],
+["Unit 7 · Trees",[
+["Binary search tree: construction step by step, static (array) representation","84"],
+["BST deletion with example","75,89"],
+["BST non-recursive traversals (inorder, descending order display)","86,88"],
+["BFS (level order) traversal of BST, pseudo code","72,90"],
+["Threaded binary tree: necessity, advantages and disadvantages","91"],
+["Threaded binary tree: construct from preorder and inorder, delete a node","83,85"],
+["Optimal Binary Search Tree (OBST): concept, expected access time, dynamic programming","73,100,102"],
+["Heap tree","74"],
+["AVL tree: concept and balance factor","74,101"],
+["AVL rotations: LL, RR, LR, RL and functions for RR and RL","104,111"],
+["AVL insertion: build trees from given sequences","101,110,112,118,126,127"],
+["AVL deletion with example, and the deletion problems in Q119 (delete 30, 55, 60)","103,119"]]],
+["Unit 8 · Graphs",[
+["Graph terminology: graph, complete, connected, subgraph","76,109,113"],
+["Indegree and outdegree, degree of undirected graphs","123"],
+["Adjacency list and adjacency matrix","76,113"],
+["Tree vs graph","114"],
+["BFS: algorithm, example, complexity","95,98"],
+["DFS: algorithm","105"],
+["Applications of graph, BFS, DFS","93,117"],
+["Prim's algorithm: algorithm and MST problems","78,97,106,108,116,121"],
+["Kruskal's algorithm: algorithm and MST problems","77,79,94,96,124"],
+["Difference between Prim's and Kruskal's","92"],
+["Dijkstra's shortest path: stepwise problems","99,115,122"],
+["Floyd-Warshall algorithm","120"],
+["Topological sorting and counting topological orderings","107,125"]]]
+];
+const KEY="dsa-checklist-v1";
+let st={},hide=false;
+try{st=JSON.parse(localStorage.getItem(KEY)||"{}")}catch(e){}
+const save=()=>{try{localStorage.setItem(KEY,JSON.stringify(st))}catch(e){}};
+const app=document.getElementById("app");
+let total=0;
+D.forEach(([u,items],ui)=>{
+  const det=document.createElement("details");det.open=true;
+  const s=document.createElement("summary");
+  s.innerHTML=`<span>${u}</span><small></small>`;det.appendChild(s);
+  const ul=document.createElement("ul");
+  items.forEach(([t,q],ii)=>{
+    total++;const id=ui+"-"+ii;
+    const n=q.split(",").length;
+    const li=document.createElement("li");
+    li.innerHTML=`<label><input type="checkbox" data-id="${id}"><span class="t"><b>${t}</b>${n>=4?'<span class="hot">Frequent</span>':''}<span class="q">Q${q.split(",").join(", Q")}</span></span></label>`;
+    ul.appendChild(li);
+  });
+  det.appendChild(ul);app.appendChild(det);
+});
+function refresh(){
+  let done=0;
+  document.querySelectorAll("details").forEach(d=>{
+    const boxes=d.querySelectorAll("input");let c=0;
+    boxes.forEach(b=>{const on=!!st[b.dataset.id];b.checked=on;b.closest("li").classList.toggle("done",on);if(on)c++});
+    d.querySelector("small").textContent=c+" / "+boxes.length;done+=c;
+  });
+  document.getElementById("fill").style.width=(done/total*100)+"%";
+  document.getElementById("stat").textContent=done+" of "+total+" topics done ("+Math.round(done/total*100)+"%)";
+  app.classList.toggle("hide",hide);
+}
+app.addEventListener("change",e=>{if(e.target.matches("input")){e.target.checked?st[e.target.dataset.id]=1:delete st[e.target.dataset.id];save();refresh()}});
+document.getElementById("hideBtn").onclick=e=>{hide=!hide;e.target.textContent=hide?"Show done":"Hide done";refresh()};
+let open=true;
+document.getElementById("expBtn").onclick=e=>{open=!open;document.querySelectorAll("details").forEach(d=>d.open=open);e.target.textContent=open?"Collapse all":"Expand all"};
+document.getElementById("expBtn").textContent="Collapse all";
+document.getElementById("resetBtn").onclick=()=>{if(confirm("Clear all ticks?")){st={};save();refresh()}};
+refresh();
+</script>
+</body>
+</html>
